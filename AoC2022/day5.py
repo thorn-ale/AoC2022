@@ -24,12 +24,7 @@ class Intstruction:
     dst: int
 
 def parse_orders(data: str) -> list[Intstruction]:
-    result = []
-    for line in data.split('\n'):
-        if not line.startswith('move'):
-            continue
-        result.append(Intstruction(*[int(x) for x in re.findall('[0-9]+', line)]))
-    return result
+    return [Intstruction(*[int(x) for x in re.findall('[0-9]+', line)]) for line in data.split('\n') if line.startswith('move')]
 
 def play_order(order: Intstruction, stacks: dict[int, list[str]]) -> dict[int, list[str]]:
     for _ in range(order.qt):
@@ -67,6 +62,9 @@ def main():
         acc2 += v[-1]
         print(f'{k} => {v}')
     print(acc2)
+
+    assert acc == 'JDTMRWCQJ'
+    assert acc2 == 'VHJDDCWRD'
 
 
 if __name__ == '__main__':
