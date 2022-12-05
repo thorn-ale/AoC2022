@@ -11,14 +11,9 @@ def parse_stack(data: str) -> dict[int, list[str]]:
     for line in raw_stack:
         if line.startswith(' 1'): continue
         for i in range(9):
-            #0123456789
-            #[F] [L] [H] [R] [Z] [J] [J] [D] [D]
-            indexes = [1, 5, 9, 13, 17, 21, 25, 29, 33]
-            crate_id = line[indexes[i]]
+            crate_id = line[i*4+1]
             if crate_id != ' ':
                 result[i+1].append(crate_id)
-    for k, v in result.items():
-        print(f'{k} => {v}')
     return result
 
 
@@ -52,8 +47,8 @@ def play_order_p2(order: Intstruction, stacks: dict[int, list[str]]) -> dict[int
 
 def main():
     data = get_input_data(5)
-    stacks = parse_stack(data[:322])
-    stacks2 = parse_stack(data[:322])
+    stacks = parse_stack(data.split('move')[0].strip())
+    stacks2 = parse_stack(data.split('move')[0].strip())
     orders = parse_orders(data)
     for o in orders:
         stacks = play_order(o, stacks)
