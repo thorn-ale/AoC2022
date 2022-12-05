@@ -63,9 +63,6 @@ def main():
         print(f'{k} => {v}')
     print(acc2)
 
-    assert acc == 'JDTMRWCQJ'
-    assert acc2 == 'VHJDDCWRD'
-
 
 if __name__ == '__main__':
     main()
