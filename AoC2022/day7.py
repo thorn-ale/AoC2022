@@ -16,6 +16,7 @@ class File:
         self.size = size
         self.parent = parent
 
+
 class Dir:
     def __init__(self, name: str, parent: Optional['Dir'] = None) -> None:
         self.name = name
@@ -57,6 +58,7 @@ class Dir:
 def parse_dir(line: str, parent: Dir) -> Dir:
     return Dir(line[len(Tokens.cd_token):], parent)
 
+
 def parse_file(line: str, parent: Dir) -> File:
     size = int(re.findall(Tokens.file_token, line)[0])
     name = line.split(' ')[1]
@@ -80,7 +82,6 @@ def parse(data):
     sd = root.get_size_dict()
     print(sum([x for x in sd.values() if x <= 100000]))
     print(min([x for x in sd.values() if 70000000 - space_used + x > 30000000]))
-    #1086293 366028
 
 
 def main():
