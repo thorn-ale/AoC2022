@@ -2,6 +2,7 @@ from pathlib import Path
 import requests
 from datetime import datetime
 import sys
+import os
 
 
 def fetch_input(day: int | None = None, year: int | None = None) -> str:
@@ -11,7 +12,16 @@ def fetch_input(day: int | None = None, year: int | None = None) -> str:
     if not year:
         year = datetime.now().year
 
-    session_cookie = open(Path(__file__).parent.joinpath('../SESSION.txt'), 'r').read().strip()
+    if not 'AOCSESSION' in os.environ.keys():
+        session_file = Path(__file__).parent.joinpath('../SESSION.txt')
+        if session_file.exists():
+            session_cookie = open(session_file, 'r').read().strip()
+        else:
+            print(f'neither the env variable AOCSESSION nor the file [project_root]/SESSION.txt exists. Please create either one of them or fetch your input manually.')
+            sys.exit(1)
+    else:
+        session_cookie = os.environ.get('AOCSESSION')
+
     #thanks to Betaveros <https://github.com/betaveros/> for the tip !
     resp = requests.get(f'https://adventofcode.com/{year}/day/{day}/input', headers={
         'Cookie': f'session={session_cookie}'
