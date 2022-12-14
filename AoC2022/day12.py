@@ -1,6 +1,7 @@
 from dataloader import get_input_data
 from collections import deque
 import math
+from PIL import Image
 
 
 def search_pos(hmap, width, heigt, target):
@@ -38,6 +39,21 @@ def find_path(hmap, starts, height, width):
     return distances
 
 
+def makeMap(hmap, width, height):
+    im = Image.new('L', (width,height))
+    for y in range(height):
+        for x in range(width):
+            val = hmap[y][x]
+            if val == 'S':
+                val = 'a'
+            if val == 'E':
+                val = 'z'
+            val = ord(val) #97 - 122
+            val = int((val - 97) * 64 / (122 - 97))
+            im.putpixel((x,y), val+24)
+    im.save('./misc/day12.png')
+
+
 def main():
     data = get_input_data(12)
     hmap = [[x for x in y] for y in data.split('\n') if y]
@@ -50,6 +66,7 @@ def main():
     starts = [(y, x) for y in range(height) for x in range(width) if hmap[y][x] == 'a']
     n_dist = find_path(hmap, starts, height, width).get(target, math.inf)
     print(n_dist)
+    makeMap(hmap, width, height)
     
 
 
